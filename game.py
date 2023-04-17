@@ -2,6 +2,9 @@ import random
 import combinations
 
 dice_sides = {1:'⚀', 2:'⚁',3:'⚂',4:'⚃',5:'⚄',6:'⚅'}
+list_of_upper_combinations = ["Ones", "Twos", "Threes", "Fours", "Fives", "Sixes"]
+list_of_lower_combinations = ["One Pair", "Two Pairs", "Three of a Kind", "Four of a Kind", "Small Straight", "Large Straight", "Full House", "Chance", "Yahtzee"]
+score = 0
 
 def round():
     rerolls_counter = 0
@@ -48,9 +51,34 @@ def round():
                 reroll(*reroll_choice())
                 break
             elif user_input == 'n':
+                rerolls_counter = 2
                 result = random_dice
-                return result
+                break
     result = random_dice
-    return result
 
-print(combinations.check_results(round()))
+    score = combinations.check_results(result)
+    return score
+
+rounds = 0
+while rounds < 13:
+    score += round()
+    rounds += 1
+
+    print("\n")
+    print("Your current score: " + str(score))
+    for combination in combinations.results_list:
+        if combination in list_of_upper_combinations:
+            list_of_upper_combinations.remove(combination)
+        elif combination in list_of_lower_combinations:
+                list_of_lower_combinations.remove(combination)
+    
+    print("Upper combinations left: ")
+    for combination in list_of_upper_combinations:
+        print(combination, end="; ")
+    print("\n")
+    print("Lower combinations left: ")
+    for combination in list_of_lower_combinations:
+        print(combination, end="; ")
+    print("\n")    
+    print("Next round: " + str(rounds))
+    print("\n")

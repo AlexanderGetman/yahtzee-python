@@ -1,56 +1,117 @@
 from collections import Counter
 
+results_list = []
+
 def check_results(result):
     print("Dices: ")
     print(result)
-    upper_result = check_results_upper_section(result)
-    lower_result = check_results_lower_section(result)
+    upper_result, upper_scores = check_results_upper_section(result)
+    lower_result, lower_scores = check_results_lower_section(result)
 
-    print("Results are: ")
-    print(upper_result)
-    print(lower_result)
+    for result in results_list:
+        if result in upper_result:
+            position = upper_result.index(result)
+            upper_scores.pop(position)
+            upper_result.remove(result)
+        elif result in lower_result:
+            position = lower_result.index(result)
+            lower_scores.pop(position)
+            lower_result.remove(result)
+
+    print("Upper results are: ")
+    for i, res in enumerate(upper_result, start=1):
+        print(str(i) + ". " + res + ", Score: " + str(upper_scores[i - 1]))
+
+    print("Lower results are: ")
+    for i, res in enumerate(lower_result, start=1):
+        print(str(i) + ". " + res + ", Score: " + str(lower_scores[i - 1]))
+    
+    def select_results():
+        score = None
+
+        if len(upper_result) == 0 and len(lower_result) == 0:
+            score = 0
+            return score
+
+        while True:
+            select_section = input("Select section (u / l): ")
+            if select_section == "u":
+                select_combination = input("Select combination: ")
+                if int(select_combination) <= len(upper_result):
+                    select_combination = int(select_combination) - 1
+                    results_list.append(upper_result[select_combination])
+                    score = upper_scores[select_combination]
+                    break
+            elif select_section == "l":
+                select_combination = input("Select combination: ")
+                if int(select_combination) <= len(lower_result):
+                    select_combination = int(select_combination) - 1
+                    results_list.append(lower_result[select_combination])
+                    score = lower_scores[select_combination]
+                    break    
+        return score
+        
+    score = select_results()
+    return score
 
 def check_results_upper_section(result):
     combinations = []
+    scores = []
     
     if result.count(1) >= 1:
-        combinations.append("Ones. Score: " + str(result.count(1) * 1))
+        combinations.append("Ones")
+        scores.append(result.count(1) * 1)
     if result.count(2) >= 1:
-        combinations.append("Twos. Score: " + str(result.count(2) * 2))
+        combinations.append("Twos")
+        scores.append(result.count(2) * 2)
     if result.count(3) >= 1:
-        combinations.append("Threes. Score: " + str(result.count(3) * 3))
+        combinations.append("Threes")
+        scores.append(result.count(3) * 3)
     if result.count(4) >= 1:
-        combinations.append("Fours. Score: " + str(result.count(4) * 4))
+        combinations.append("Fours")
+        scores.append(result.count(4) * 4)
     if result.count(5) >= 1:
-        combinations.append("Fives. Score: " + str(result.count(5) * 5))
+        combinations.append("Fives")
+        scores.append(result.count(5) * 5)
     if result.count(6) >= 1:
-        combinations.append("Sixes. Score: " + str(result.count(6) * 6))
+        combinations.append("Sixes")
+        scores.append(result.count(6) * 6)
 
-    return combinations
+    return combinations, scores
 
 def check_results_lower_section(result):
     combinations = []
+    scores = []
 
     if one_pair(result):
-        combinations.append("One Pair. Score: " + str(one_pair(result)))
+        combinations.append("One Pair")
+        scores.append(one_pair(result))
     if two_pairs(result):
-        combinations.append("Two Pairs. Score: " + str(two_pairs(result)))
+        combinations.append("Two Pairs")
+        scores.append(two_pairs(result))
     if three_of_a_kind(result):
-        combinations.append("Three of a Kind. Score: " + str(three_of_a_kind(result)))
+        combinations.append("Three of a Kind")
+        scores.append(three_of_a_kind(result))
     if four_of_a_kind(result):
-        combinations.append("Four of a Kind. Score: " + str(four_of_a_kind(result)))
+        combinations.append("Four of a Kind")
+        scores.append(four_of_a_kind(result))
     if small_straight(result):
-        combinations.append("Small Straight. Score: " + str(small_straight(result)))
+        combinations.append("Small Straight")
+        scores.append(small_straight(result))
     if large_straight(result):
-        combinations.append("Large Straight. Score: " + str(large_straight(result)))
+        combinations.append("Large Straight")
+        scores.append(large_straight(result))
     if full_house(result):
-        combinations.append("Full House. Score: " + str(full_house(result)))
+        combinations.append("Full House")
+        scores.append(full_house(result))
     if chance(result):
-        combinations.append("Chance. Score: " + str(chance(result)))
+        combinations.append("Chance")
+        scores.append(chance(result))
     if yahtzee(result):
-        combinations.append("Yahtzee! Score: " + str(yahtzee(result)))
+        combinations.append("Yahtzee")
+        scores.append(yahtzee(result))
 
-    return combinations
+    return combinations, scores
 
 def one_pair(my_list):
     duplicates = []
