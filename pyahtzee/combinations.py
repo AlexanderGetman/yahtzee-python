@@ -1,6 +1,6 @@
 from collections import Counter
 
-results_list = ["Yahtzee"]
+results_list = []
 score_list = []
 
 def check_results(result):
