@@ -4,7 +4,7 @@ results_list = []
 score_list = []
 
 def check_results(result):
-    print("Dices: ")
+    print("Dice: ")
     print(result)
     upper_result, upper_scores = check_results_upper_section(result)
     lower_result, lower_scores = check_results_lower_section(result)
@@ -34,22 +34,24 @@ def check_results(result):
             score = 0
             return score
 
-        while True:
+        while True:            
             select_section = input("Select section (u / l): ")
             if select_section == "u":
                 select_combination = input("Select combination: ")
-                if int(select_combination) <= len(upper_result) and int(select_combination) != 0:
-                    select_combination = int(select_combination) - 1
-                    results_list.append(upper_result[select_combination])
-                    score = upper_scores[select_combination]
-                    break
-            elif select_section == "l":
+                if select_combination.isnumeric():
+                    if int(select_combination) <= len(upper_result) and int(select_combination) != 0:
+                        select_combination = int(select_combination) - 1
+                        results_list.append(upper_result[select_combination])
+                        score = upper_scores[select_combination]
+                        break
+            elif select_section == "l":                
                 select_combination = input("Select combination: ")
-                if int(select_combination) <= len(lower_result) and int(select_combination) != 0:
-                    select_combination = int(select_combination) - 1
-                    results_list.append(lower_result[select_combination])
-                    score = lower_scores[select_combination]
-                    break
+                if select_combination.isnumeric():
+                    if int(select_combination) <= len(lower_result) and int(select_combination) != 0:
+                        select_combination = int(select_combination) - 1
+                        results_list.append(lower_result[select_combination])
+                        score = lower_scores[select_combination]
+                        break
         return score
         
     score = select_results()

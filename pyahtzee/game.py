@@ -26,22 +26,22 @@ def round():
     
     def reroll(*args):
         for dice in args:
-            random_dice[dice-1] = random.randint(1, 5)
-            random_dice.sort()
+            random_dice[dice-1] = random.randint(1, 6)
+        random_dice.sort()
         nonlocal rerolls_counter    
         rerolls_counter += 1
 
     def reroll_choice():
         while True:
-            user_input = input("Enter dices from 1 to 5 that you want to reroll separated by spaces: ")
+            user_input = input("Enter dice from 1 to 5 that you want to reroll separated by spaces: ")
             numeric_check = all(char.isdigit() or char.isspace() for char in user_input)
             if numeric_check:
                 range_check = all(int(char) >= 1 and int(char) <= 5 for char in user_input.split())
                 if range_check:
                     break
-        dices_to_reroll = user_input.split()
+        dice_to_reroll = user_input.split()
         result_list = []
-        for dice in dices_to_reroll:
+        for dice in dice_to_reroll:
             result_list.append(int(dice))
         return result_list
     
@@ -111,5 +111,3 @@ def game():
                 combinations.results_list = []
             elif ask == "n":
                 break
-
-game()
